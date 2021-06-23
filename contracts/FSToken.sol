@@ -4,6 +4,8 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./IERC20.sol";
 
 contract FST is IERC20 {
+    event TransferState(bool newState);
+
     uint256 private constant MAX_UINT256 = 2**256 - 1;
     mapping(address => uint256) public balances;
     mapping(address => mapping(address => uint256)) public allowed;
@@ -50,6 +52,7 @@ contract FST is IERC20 {
 
     function setTransferState(bool newState) public _ownerOnly returns (bool) {
         transferAllowed = newState;
+        emit TransferState(newState);
         return newState;
     }
 
