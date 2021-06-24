@@ -42,7 +42,11 @@ contract FST is IERC20 {
     }
 
     modifier _isTransferAllowed() {
-        require(transferAllowed == true, "transfer is not allowed !");
+        require(
+            (transferAllowed == true && msg.sender != owner) ||
+                msg.sender == owner,
+            "transfer is not allowed !"
+        );
         _;
     }
 
@@ -59,6 +63,7 @@ contract FST is IERC20 {
     function transfer(address _to, uint256 _value)
         public
         override
+        _isTransferAllowed
         returns (bool success)
     {
         require(
